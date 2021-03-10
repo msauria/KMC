@@ -1,4 +1,4 @@
-all: kmc kmc_dump kmc_tools py_kmc_api
+all: kmc kmc_dump kmc_tools py_kmc_api kmc_genome_counts
 
 KMC_BIN_DIR = bin
 KMC_MAIN_DIR = kmer_counter
@@ -49,6 +49,9 @@ $(KMC_API_DIR)/mmer.o \
 $(KMC_API_DIR)/kmc_file.o \
 $(KMC_API_DIR)/kmer_api.o
 
+KMC_GENOME_COUNTS_OBJS = \
+${KMC_DUMP_DIR}/kmc_genome_counts.o
+
 KMC_API_SRC_FILES = $(wildcard $(KMC_API_DIR)/*.cpp)
 PY_KMC_API_OBJS = $(patsubst $(KMC_API_DIR)/%.cpp,$(PY_KMC_API_DIR)/%.o,$(KMC_API_SRC_FILES))
 
@@ -68,7 +71,7 @@ KMC_TOOLS_LIBS = \
 $(KMC_TOOLS_DIR)/libs/libz.a \
 $(KMC_TOOLS_DIR)/libs/libbz2.a
 
-$(KMC_OBJS) $(KMC_DUMP_OBJS) $(KMC_API_OBJS): %.o: %.cpp
+$(KMC_OBJS) $(KMC_DUMP_OBJS) $(KMC_API_OBJS) $(KMC_GENOME_COUNTS_OBJS): %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(KMC_TOOLS_OBJS): %.o: %.cpp
@@ -88,6 +91,10 @@ kmc: $(KMC_OBJS) $(RADULS_OBJS)
 	$(CC) $(CLINK) -o $(KMC_BIN_DIR)/$@ $^ $(KMC_LIBS)
 
 kmc_dump: $(KMC_DUMP_OBJS) $(KMC_API_OBJS)
+	-mkdir -p $(KMC_BIN_DIR)
+	$(CC) $(CLINK) -o $(KMC_BIN_DIR)/$@ $^
+
+kmc_genome_counts: $(KMC_GENOME_COUNTS_OBJS) $(KMC_API_OBJS)
 	-mkdir -p $(KMC_BIN_DIR)
 	$(CC) $(CLINK) -o $(KMC_BIN_DIR)/$@ $^
 
