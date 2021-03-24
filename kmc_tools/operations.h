@@ -54,6 +54,10 @@ public:
 			if (input1->TopCounter() > input2->TopCounter())
 				output_bundle.Insert(input1->TopKmer(), input1->TopCounter() - input2->TopCounter());
 			break;
+		case CounterOpType::GEQ:
+			if (input1->TopCounter() >= input2->TopCounter())
+				output_bundle.Insert(input1->TopKmer(), input1->TopCounter());
+			break;
 		case CounterOpType::FROM_DB1:
 			output_bundle.Insert(input1->TopKmer(), input1->TopCounter());
 			break;
@@ -208,6 +212,7 @@ public:
 
 
 
+
 //************************************************************************************************************
 // CCountersSubtract - implementation of subtraction operation of 2 k-mer's sets.
 // If k-mer exists in both input their counters are subtracted.
@@ -314,9 +319,9 @@ public:
 		for (auto o : outputs)
 		{
 			auto op = o->GetOpType();
-			if (op == CSimpleOutputDesc::OpType::INTERSECT || op == CSimpleOutputDesc::OpType::UNION || op == CSimpleOutputDesc::OpType::COUNTERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::REVERSE_COUNTERS_SUBTRACTION)
+			if (op == CSimpleOutputDesc::OpType::INTERSECT || op == CSimpleOutputDesc::OpType::UNION || op == CSimpleOutputDesc::OpType::COUNTERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::REVERSE_COUNTERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::COUNTERS_COMPARE)
 				outputs_for_equals.push_back(o);
-			if (op == CSimpleOutputDesc::OpType::UNION || op == CSimpleOutputDesc::OpType::KMERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::COUNTERS_SUBTRACTION)
+			if (op == CSimpleOutputDesc::OpType::UNION || op == CSimpleOutputDesc::OpType::KMERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::COUNTERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::COUNTERS_COMPARE)
 				outputs_for_1st_lower.push_back(o);
 			if (op == CSimpleOutputDesc::OpType::UNION || op == CSimpleOutputDesc::OpType::REVERSE_KMERS_SUBTRACTION || op == CSimpleOutputDesc::OpType::REVERSE_COUNTERS_SUBTRACTION)
 				outputs_for_2nd_lower.push_back(o);

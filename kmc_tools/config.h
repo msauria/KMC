@@ -19,7 +19,7 @@
 #include "kmc_header.h"
 #include "percent_progress.h"
 
-enum class CounterOpType { MIN, MAX, SUM, DIFF, FROM_DB1, FROM_DB2, NONE };
+enum class CounterOpType { MIN, MAX, SUM, DIFF, GEQ, FROM_DB1, FROM_DB2, NONE };
 
 class CCounterBuilder
 {
@@ -78,7 +78,7 @@ struct COutputDesc : public CDescBase
 
 struct CSimpleOutputDesc : public COutputDesc
 {
-	enum class OpType { INTERSECT, UNION, KMERS_SUBTRACTION, COUNTERS_SUBTRACTION, REVERSE_KMERS_SUBTRACTION, REVERSE_COUNTERS_SUBTRACTION }; 	
+	enum class OpType { INTERSECT, UNION, KMERS_SUBTRACTION, COUNTERS_SUBTRACTION, COUNTERS_COMPARE, REVERSE_KMERS_SUBTRACTION, REVERSE_COUNTERS_SUBTRACTION }; 	
 	OpType op_type;
 	CounterOpType counter_op;
 	CSimpleOutputDesc(OpType op_type) :
@@ -92,9 +92,12 @@ struct CSimpleOutputDesc : public COutputDesc
 		case OpType::UNION:
 			counter_op = CounterOpType::SUM;
 			break;
+		case OpType::COUNTERS_COMPARE:
+			counter_op = CounterOpType::GEQ;
+			break;
 		case OpType::KMERS_SUBTRACTION: //irrelevant for KMERS_SUBTRACTION and REVERSE_KMERS_SUBTRACTION
 		case OpType::COUNTERS_SUBTRACTION:
-		case OpType::REVERSE_COUNTERS_SUBTRACTION:			
+		case OpType::REVERSE_COUNTERS_SUBTRACTION:
 		case OpType::REVERSE_KMERS_SUBTRACTION:
 			counter_op = CounterOpType::DIFF;
 			break;
@@ -303,6 +306,9 @@ public:
 				  << "  counters_subtract          - difference of input sets based on k-mers and their counters (weaker version of kmers_subtract).\n"
 				  << "                               Output database will contains all k-mers that are present in first input, \n"
 				  << "                               beyond those for which counter operation will lead to remove (i.e. counter equal to 0 or negative number)\n"
+				  << "  counters_compare           - set of k-mers present in the first set with a greater or equal counter value than second set.\n"
+				  << "                               If k-mer is absent from second set, it is considered to have a counter value of zero. Counter\n"
+				  << "                               values are taken from first set.\n"
 				  << "  reverse_kmers_subtract     - same as kmers_subtract but treat input2 as first and input1 as second\n"
 				  << "  reverse_counters_subtract  - same as counters_subtract but treat input2 as first and input1 as second\n"
 				  << " For each input there are additional parameters:\n"

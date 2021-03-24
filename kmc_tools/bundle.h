@@ -264,6 +264,8 @@ public:
 			return MIN(counter1, counter2);
 		case CounterOpType::SUM:
 			return counter1 + counter2;
+		case CounterOpType::GEQ:
+			return (counter1 > counter2) || (counter1 == counter2) ? counter1 : 0;
 		case CounterOpType::FROM_DB1:
 			return counter1;
 		case CounterOpType::FROM_DB2:

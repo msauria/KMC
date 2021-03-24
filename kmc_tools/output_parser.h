@@ -150,6 +150,11 @@ template<unsigned SIZE> void COutputParser<SIZE>::modifier(COperNode<SIZE>* exp)
 		exp->SetCounterOpType(CounterOpType::DIFF);
 		nextToken();
 	}
+	else if (curr_token.second == TokenType::GEQ_MODIFIER)
+	{
+		exp->SetCounterOpType(CounterOpType::GEQ);
+		nextToken();
+	}
 	else if (curr_token.second == TokenType::LEFT_MODIFIER)
 	{
 		exp->SetCounterOpType(CounterOpType::FROM_DB1);

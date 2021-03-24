@@ -169,6 +169,27 @@ public:
 	}
 #endif
 };
+
+
+template<unsigned SIZE> class CCountersCompareNode : public COperNode<SIZE>
+{
+public:
+	CCountersCompareNode():
+		COperNode<SIZE>(CounterOpType::GEQ)
+	{
+	}
+	CBundle<SIZE>* GetExecutionRoot() override
+	{
+		return new CBundle<SIZE>(new CCountersSubtract<SIZE>(this->left->GetExecutionRoot(), this->right->GetExecutionRoot(), this->counter_op_type));
+	}
+#ifdef ENABLE_DEBUG
+	void Info() override
+	{
+		std::cout << "~";
+	}
+#endif
+};
+
 //************************************************************************************************************
 // CIntersectionNode - represents node for intersection operation
 //************************************************************************************************************

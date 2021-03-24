@@ -29,6 +29,7 @@ CTokenizer::CTokenizer()
 	token_patterns[6] = std::make_pair("^(min)", TokenType::MIN_MODIFIER);
 	token_patterns[7] = std::make_pair("^(max)", TokenType::MAX_MODIFIER);
 	token_patterns[8] = std::make_pair("^(diff)", TokenType::DIFF_MODIFIER);
+	token_patterns[8] = std::make_pair("^(geq)", TokenType::GEQ_MODIFIER);
 	token_patterns[9] = std::make_pair("^(sum)", TokenType::SUM_MODIFIER);
 	token_patterns[10] = std::make_pair("^(left)", TokenType::LEFT_MODIFIER);
 	token_patterns[11] = std::make_pair("^(right)", TokenType::RIGHT_MODIFIER);

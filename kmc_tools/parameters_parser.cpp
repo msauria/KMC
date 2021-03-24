@@ -444,6 +444,10 @@ bool CParametersParser::read_output_desc_for_simple()
 	{
 		op_type = CSimpleOutputDesc::OpType::COUNTERS_SUBTRACTION;
 	}
+	else if (strcmp(argv[pos], "counters_compare") == 0)
+	{
+		op_type = CSimpleOutputDesc::OpType::COUNTERS_COMPARE;
+	}
 	else if (strcmp(argv[pos], "union") == 0)
 	{
 		op_type = CSimpleOutputDesc::OpType::UNION;
@@ -516,6 +520,10 @@ bool CParametersParser::read_output_desc_for_simple()
 			else if (strcmp(mode, "diff") == 0)
 			{
 				config.simple_output_desc.back().counter_op = CounterOpType::DIFF;
+			}
+			else if (strcmp(mode, "geq") == 0)
+			{
+				config.simple_output_desc.back().counter_op = CounterOpType::GEQ;
 			}
 			else if (strcmp(mode, "left") == 0)
 			{
